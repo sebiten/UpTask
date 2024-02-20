@@ -50,6 +50,7 @@ const autenticar = async (req, res) => {
 
 const confirmar = async (req, res) => {
   const { token } = req.params;
+  // confirmar que el usuario sea el correcto
   const usuarioConfirmar = await Usuario.findOne({ token });
   if (!usuarioConfirmar) {
     const error = new Error("Token no valido");
@@ -74,6 +75,7 @@ const olvidePassword = async (req, res) => {
     return res.status(404).json({ msg: error.message });
   }
   try {
+    // Generamos token para poder restablecer contraseña
     usuario.token = generarId();
     await usuario.save();
     res.json({ msg: "Hemos enviado un email con las instrucciones" });
@@ -99,7 +101,7 @@ const nuevoPassword = async (req, res) => {
   const { password } = req.body;
 
   const usuario = await Usuario.findOne({ token });
-
+  // restablecemos password, cambiando el viejo por el nuevo y borramos el token que ya no nos sirve
   if (usuario) {
     usuario.password = password;
     usuario.token = "";

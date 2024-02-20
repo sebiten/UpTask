@@ -1,6 +1,7 @@
 import Proyecto from "../models/Proyecto.js";
 
 const obtenerProyectos = async (req, res) => {
+  // obtenemos el proyecto del cleardo y comprobamos que sea el
   const proyectos = await Proyecto.find().where("creador").equals(req.usuario);
   res.json(proyectos);
 };
